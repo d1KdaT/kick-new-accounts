@@ -1,0 +1,1 @@
+/usr/bin/wget -qO /dev/null http://example.ru/queue.php
