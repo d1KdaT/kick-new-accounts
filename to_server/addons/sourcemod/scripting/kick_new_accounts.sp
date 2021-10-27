@@ -4,6 +4,7 @@
 #include <sourcemod>
 #include <SteamWorks>
 
+bool g_bEnableKick = true;
 int g_iNeedleDays = 7;
 char g_sApiUrl[64], g_sKickReason[64];
 
@@ -28,6 +29,9 @@ public void OnPluginStart()
 	(Convar = CreateConVar("sm_kna_needle_days", "7", "Interval in seconds to retry request, in case of failure", _, true, 1.0, true, 90.0)).AddChangeHook(ChangeCvar_NeedleDays);
 	ChangeCvar_NeedleDays(Convar, NULL_STRING, NULL_STRING);
 
+	(Convar = CreateConVar("sm_kna_enable_kick", "1", "Kick players (1)? Or just make requests to API to collect data (0)", _, true, 0.0, true, 1.0)).AddChangeHook(ChangeCvar_EnableKick);
+	ChangeCvar_EnableKick(Convar, NULL_STRING, NULL_STRING);
+
 	AutoExecConfig(true, "kick_new_accounts");
 }
 
@@ -44,6 +48,11 @@ void ChangeCvar_KickReason(ConVar Convar, const char[] oldValue, const char[] ne
 void ChangeCvar_NeedleDays(ConVar Convar, const char[] oldValue, const char[] newValue)
 {
 	g_iNeedleDays = Convar.IntValue;
+}
+
+void ChangeCvar_EnableKick(ConVar Convar, const char[] oldValue, const char[] newValue)
+{
+	g_bEnableKick = Convar.BoolValue;
 }
 
 public void OnClientAuthorized(int iClient)
@@ -96,8 +105,11 @@ public void HTTPRequestComplete(Handle hRequest, bool bFailure, bool bRequestSuc
 				{
 					if(iPlayerNewState == 0)
 					{
-						//KickClient(iClient, g_sKickReason);
-						LogMessage("Client %N (ID: %i) kicked as new", iClient, iPlayerAccountID);
+						if(g_bEnableKick)
+						{
+							KickClient(iClient, g_sKickReason);
+							LogMessage("Client %N (ID: %i) kicked as new", iClient, iPlayerAccountID);
+						}
 					}
 				}
 				else
