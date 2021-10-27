@@ -12,7 +12,7 @@ public Plugin myinfo =
 {
 	name		= "Kick New Steam Accounts",
 	author		= "d1KdaT",
-	version		= "1.0.1",
+	version		= "1.0.2",
 	url			= "https://d1kdat.me/"
 };
 
