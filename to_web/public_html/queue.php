@@ -4,6 +4,10 @@ require_once(__DIR__ . "/config.php");
 $ms = mysqli_connect(HOST, USER, PASS, BASE);
 if($ms)
 {
+    // delete old records (90 days)
+    $time_to_delete = time() - 7776000;
+    mysqli_query($ms, "DELETE FROM `steamids` WHERE `time_created` < " . $time_to_delete . ";");
+
     $query = mysqli_query($ms, "SELECT * FROM `queue`;");
     if(mysqli_num_rows($query) > 0)
     {

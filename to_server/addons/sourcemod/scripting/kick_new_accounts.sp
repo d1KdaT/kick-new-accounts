@@ -12,7 +12,7 @@ public Plugin myinfo =
 {
 	name		= "Kick New Steam Accounts",
 	author		= "d1KdaT",
-	version		= "1.0.2",
+	version		= "1.0.3",
 	url			= "https://d1kdat.me/"
 };
 
@@ -26,7 +26,7 @@ public void OnPluginStart()
 	(Convar = CreateConVar("sm_kna_kick_reason", "New Steam accounts not allowed (7 days)", "Reason shows to kicked player")).AddChangeHook(ChangeCvar_KickReason);
 	ChangeCvar_KickReason(Convar, NULL_STRING, NULL_STRING);
 
-	(Convar = CreateConVar("sm_kna_needle_days", "7", "Interval in seconds to retry request, in case of failure", _, true, 1.0, true, 90.0)).AddChangeHook(ChangeCvar_NeedleDays);
+	(Convar = CreateConVar("sm_kna_needle_days", "7", "Required number of days from account creation to be able to connect to the server", _, true, 1.0, true, 90.0)).AddChangeHook(ChangeCvar_NeedleDays);
 	ChangeCvar_NeedleDays(Convar, NULL_STRING, NULL_STRING);
 
 	(Convar = CreateConVar("sm_kna_enable_kick", "1", "Kick players (1)? Or just make requests to API to collect data (0)", _, true, 0.0, true, 1.0)).AddChangeHook(ChangeCvar_EnableKick);
